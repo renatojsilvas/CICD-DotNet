@@ -1,0 +1,79 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+  docker:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/teste:dev
+  
+  deploy:
+    runs-on: ubuntu-latest   
+    needs: [docker]
+    
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        # TODO: add env vars as secrets on GitHub
+        with:
+          # VPS IP
+          host: ${{ secrets.VPS_SSH_HOST }}
+          # VPS username
+          username: ${{ secrets.VPS_SSH_USERNAME }}
+          # SSH key (copy it from your local machine)
+          password: ${{ secrets.VPS_SSH_SECRET }}
+          # SSH port
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: |
+            mkdir /home/teste-docker-deploy
+            cd /home/teste-docker-deploy
+            wget https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/main/docker-compose.yml
+            echo "Pull new image"
+            docker-compose -f /home/teste-docker-deploy-dev/docker-compose.yml pull
+            echo "Restart the container"
+            docker-compose -f /home/teste-docker-deploy-dev/docker-compose.yml up --force-recreate --build --no-deps -d
+            echo "Delete old image"
+            docker rmi renatojsilvas/test:dev
