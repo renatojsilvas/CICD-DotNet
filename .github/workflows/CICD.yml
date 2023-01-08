@@ -76,4 +76,4 @@ jobs:
             echo "Restart the container"
             docker-compose -f /home/teste-docker-deploy/docker-compose.yml up --force-recreate --build --no-deps -d
             echo "Delete old image"
-            docker image prune -f
+            docker rmi renatojsilvas/teste:latest
