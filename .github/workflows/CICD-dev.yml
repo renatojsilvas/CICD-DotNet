@@ -74,6 +74,6 @@ jobs:
             echo "Pull new image"
             docker-compose -f /home/teste-docker-deploy-dev/docker-compose-dev.yml pull
             echo "Restart the container"
-            docker-compose -f /home/teste-docker-deploy-dev/docker-compose.yml-dev up --force-recreate --build --no-deps -d
+            docker-compose -f /home/teste-docker-deploy-dev/docker-compose-dev.yml up --force-recreate --build --no-deps -d
             echo "Delete old image"
-            docker rmi renatojsilvas/test:dev
+            docker image prune -f
