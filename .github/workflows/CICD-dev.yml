@@ -48,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/teste:dev
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/teste-dev:latest
   
   deploy:
     runs-on: ubuntu-latest   
