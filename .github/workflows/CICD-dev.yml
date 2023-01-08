@@ -68,8 +68,8 @@ jobs:
           # SSH port
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
-            mkdir /home/teste-docker-deploy
-            cd /home/teste-docker-deploy
+            mkdir /home/teste-docker-deploy-dev
+            cd /home/teste-docker-deploy-dev
             wget https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/main/docker-compose.yml
             echo "Pull new image"
             docker-compose -f /home/teste-docker-deploy-dev/docker-compose.yml pull
