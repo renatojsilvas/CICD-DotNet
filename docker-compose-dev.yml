@@ -3,7 +3,7 @@ version: '3.4'
 services:
   rjsilvas.teste:
     image: renatojsilvas/teste-dev:dev
-    container_name: teste
+    container_name: teste-dev
     ports:
       - "5001:80"
     restart: always
