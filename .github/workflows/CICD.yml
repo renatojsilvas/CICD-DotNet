@@ -68,6 +68,7 @@ jobs:
           # SSH port
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
+            rm -rf /home/teste-docker-deploy
             mkdir /home/teste-docker-deploy
             cd /home/teste-docker-deploy
             wget https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/main/docker-compose.yml
