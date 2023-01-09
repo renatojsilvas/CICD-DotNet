@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   rjsilvas.teste:
-    image: renatojsilvas/teste-dev:dev
+    image: renatojsilvas/teste-dev:latest
     container_name: teste-dev
     ports:
       - "5001:80"
