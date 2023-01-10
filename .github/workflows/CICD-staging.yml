@@ -48,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/teste-dev:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/teste-staging:latest
   
   deploy:
     runs-on: ubuntu-latest   
@@ -68,13 +68,14 @@ jobs:
           # SSH port
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
-            rm -rf /home/teste-docker-deploy-dev
-            mkdir /home/teste-docker-deploy-dev
-            cd /home/teste-docker-deploy-dev
-            wget https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/develop/docker-compose-dev.yml
+            echo "Recreate folder"
+            rm -rf /home/teste-docker-deploy-staging
+            mkdir /home/teste-docker-deploy-staging
+            cd /home/teste-docker-deploy-staging
+            wget https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/develop/docker-compose-staging.yml
             echo "Pull new image"
-            docker-compose -f /home/teste-docker-deploy-dev/docker-compose-dev.yml pull
+            docker-compose -f /home/teste-docker-deploy-staging/docker-compose-staging.yml pull
             echo "Restart the container"
-            docker-compose -f /home/teste-docker-deploy-dev/docker-compose-dev.yml up --force-recreate --build --no-deps -d
+            docker-compose -f /home/teste-docker-deploy-staging/docker-compose-staging.yml up --force-recreate --build --no-deps -d
             echo "Delete old image"
             docker image prune -f
