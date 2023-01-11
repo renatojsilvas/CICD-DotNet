@@ -6,10 +6,12 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MiniTodo.csproj", "MiniTodo/"]
+COPY ["src/Minitodo.API/MiniTodo.csproj", "MiniTodo/"]
 RUN dotnet restore "MiniTodo/MiniTodo.csproj"
 WORKDIR "src/MiniTodo"
-COPY . .
+RUN echo $(ls)
+COPY src/Minitodo.API/ .
+RUN echo $(ls)
 RUN dotnet build "MiniTodo.csproj" -c Release -o /app/build
 
 FROM build AS publish

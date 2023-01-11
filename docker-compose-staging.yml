@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  rjsilvas.teste-staging:
+    image: renatojsilvas/teste-staging:latest
+    container_name: teste-staging
+    depends_on:
+      - database-staging
+    ports:
+      - "5001:80"
+    restart: always
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Staging
+
+  database-staging:
+    image: mysql:8.0.22
+    container_name: mysqldb-staging
+    ports:
+        - "3307:3307"
+    expose: 
+        - 3307
+    volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        - db-volume-staging:/var/lib/mysql
+    restart: always
+    environment: 
+        MYSQL_ROOT_PASSWORD: admin
+        MYSQL_TCP_PORT: 3307
+        
+volumes:
+  db-volume-staging:     
