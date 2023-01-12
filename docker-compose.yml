@@ -14,7 +14,7 @@ services:
 
   database:
     image: mysql:8.0.22
-    container_name: mysqldb-staging
+    container_name: mysqldb
     ports:
         - "3306:3306"
     expose: 
