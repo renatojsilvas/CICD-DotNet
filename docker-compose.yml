@@ -1,7 +1,5 @@
 version: '3.4'
 
-name: MiniTodo
-
 services:
   rjsilvas.teste:
     image: renatojsilvas/teste:latest
