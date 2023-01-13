@@ -71,7 +71,7 @@ jobs:
             rm -rf /home/teste-docker-deploy-staging
             mkdir /home/teste-docker-deploy-staging
             cd /home/teste-docker-deploy-staging
-            get https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/develop/docker-compose-staging.yml
+            wget https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/develop/docker-compose-staging.yml
             wget https://raw.githubusercontent.com/renatojsilvas/CICD-DotNet/develop/init-staging.sql
             mv init-staging.sql init.sql
             echo "Pull new image"
