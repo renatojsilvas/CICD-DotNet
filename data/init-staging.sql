@@ -1,10 +1,10 @@
 CREATE USER 'renatojsilvas'@'%' IDENTIFIED BY 'admin';
 
-CREATE DATABASE myfinances;
+CREATE DATABASE teste;
 
 GRANT ALL PRIVILEGES ON myfinances.* TO 'renatojsilvas'@'%';
 
-USE myfinances;
+USE teste;
 
 CREATE TABLE user (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
